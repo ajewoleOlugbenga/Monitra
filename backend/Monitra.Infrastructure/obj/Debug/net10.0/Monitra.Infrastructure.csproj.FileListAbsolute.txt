@@ -1,0 +1,16 @@
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\bin\Debug\net10.0\Monitra.Infrastructure.deps.json
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\bin\Debug\net10.0\Monitra.Infrastructure.dll
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\bin\Debug\net10.0\Monitra.Infrastructure.pdb
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\bin\Debug\net10.0\Monitra.Core.dll
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\bin\Debug\net10.0\Monitra.Core.pdb
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.AssemblyInfo.cs
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.sourcelink.json
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra..283DF020.Up2Date
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.dll
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\refint\Monitra.Infrastructure.dll
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\Monitra.Infrastructure.pdb
+C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Infrastructure\obj\Debug\net10.0\ref\Monitra.Infrastructure.dll

@@ -1,0 +1,298 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Monitra.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.0-preview.1.25081.1",
+          "Monitra.Core": "1.0.0",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0-preview.1"
+        },
+        "runtime": {
+          "Monitra.Infrastructure.dll": {}
+        }
+      },
+      "Microsoft.EntityFrameworkCore/10.0.0-preview.1.25081.1": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.0-preview.1.25081.1",
+          "Microsoft.Extensions.Caching.Memory": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Logging": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8101"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Abstractions/10.0.0-preview.1.25081.1": {
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8101"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Relational/10.0.0-preview.1.25081.1": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.0-preview.1.25081.1",
+          "Microsoft.Extensions.Caching.Memory": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Logging": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8101"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Abstractions/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Memory/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Options": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Primitives": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Caching.Memory.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0-preview.1.25080.5": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Options": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Logging.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options/10.0.0-preview.1.25080.5": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0-preview.1.25080.5",
+          "Microsoft.Extensions.Primitives": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Options.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/10.0.0-preview.1.25080.5": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.8005"
+          }
+        }
+      },
+      "Npgsql/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.0-preview.1.25080.5"
+        },
+        "runtime": {
+          "lib/net8.0/Npgsql.dll": {
+            "assemblyVersion": "9.0.2.0",
+            "fileVersion": "9.0.2.0"
+          }
+        }
+      },
+      "Npgsql.EntityFrameworkCore.PostgreSQL/10.0.0-preview.1": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.0-preview.1.25081.1",
+          "Microsoft.EntityFrameworkCore.Relational": "10.0.0-preview.1.25081.1",
+          "Npgsql": "9.0.2"
+        },
+        "runtime": {
+          "lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "Monitra.Core/1.0.0": {
+        "runtime": {
+          "Monitra.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Monitra.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.EntityFrameworkCore/10.0.0-preview.1.25081.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RtRpmCVfnP9OtU0AqZSBHE9f3FQfdn7IhlTzAR2DfMgFNCNj595AGjS3rLUlN7di2TYALZWn4Mo5h3PVn8Ui+w==",
+      "path": "microsoft.entityframeworkcore/10.0.0-preview.1.25081.1",
+      "hashPath": "microsoft.entityframeworkcore.10.0.0-preview.1.25081.1.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Abstractions/10.0.0-preview.1.25081.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dl3xsKnuNvLPyFh/hSST0AIzuWj+my1vmOHS35lH/EQCcGxgpnQszhEZVyEkVLO0MgWEDo5l0meavi43XMSzwg==",
+      "path": "microsoft.entityframeworkcore.abstractions/10.0.0-preview.1.25081.1",
+      "hashPath": "microsoft.entityframeworkcore.abstractions.10.0.0-preview.1.25081.1.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Relational/10.0.0-preview.1.25081.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3wN0a+A9LViE65C3ax62PIS3WePFdxzGOrjFSQqfjlEwEndHt1Rdf9fAreO+hNGEXLPjSifurwID+7K5EvwF6Q==",
+      "path": "microsoft.entityframeworkcore.relational/10.0.0-preview.1.25081.1",
+      "hashPath": "microsoft.entityframeworkcore.relational.10.0.0-preview.1.25081.1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Abstractions/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-H1eRrxMSyUVbhBEvUh6lEoclkZ22RNlW+xm5SOicfAA3QTMzKuDK3DDooyjD73W5WK0UuYKNmqMmn3bQ3Gh5sg==",
+      "path": "microsoft.extensions.caching.abstractions/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.caching.abstractions.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Memory/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-I97geAzBtNqJjLT3bFuQa7dQBnR4ARFnIR1T49k7RnfUthjhYDpNIuQnk0Gqiy0Lz2AtIIo94klRQY0wsxeUmg==",
+      "path": "microsoft.extensions.caching.memory/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.caching.memory.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tsw7Qt0TnaDIllzOG+YgEzjFm5TbSwbUVAO0Px4zYCUkWbaKAYbccHwMRtaWYvoEFXGFz3+B7DGHSs/txRxe6g==",
+      "path": "microsoft.extensions.configuration.abstractions/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.configuration.abstractions.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T50DtUNMlTWsIjJaufPsPBEkeN7firM83Z/JDY0q9v4uL47llTCBdRtlrJ+NlGrF6+3Ny0mtWB7gIKn4AUeGzA==",
+      "path": "microsoft.extensions.dependencyinjection/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.dependencyinjection.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/6gp/48ibjQePwjWlSu72bditSihLVRXf3L+kcoj6JKWA+tnWxEgOIuKmrSigTvSeqmAHcdpSwu7Fuf6bgFAyQ==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wr2pP0FA4hjROdtbvtV+yZghuXlX4Xpb792ozXjkkwBHbQv8ibjsqeY9d/tRRY9oFCc29QbQ+SYymMo/ypQsfg==",
+      "path": "microsoft.extensions.logging/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.logging.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C21GNMRtPHRWKRRvPba59tjEqvwxpD6B+1Cd+B0Z3LamD2rZ3WTLTgf05kN18dXbhvcT+i24CN7Yntsbu1y8ZQ==",
+      "path": "microsoft.extensions.logging.abstractions/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.logging.abstractions.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ibl/JRg6OJE1s5vWj/gAi+gzPR4Y1DvxZM7DsX9MalSwE9XI/VgMOT/axabcNYmrwVccL1jB9cATPRoGSI1olQ==",
+      "path": "microsoft.extensions.options/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.options.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/10.0.0-preview.1.25080.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vuci/NLr6n/4Vxig68IwDxu2J6OMv6k9d8PXi+QHR2z7EZciBxL1R5Ri3kdMUZxZfD38M/AcUWllGcynSgPJSg==",
+      "path": "microsoft.extensions.primitives/10.0.0-preview.1.25080.5",
+      "hashPath": "microsoft.extensions.primitives.10.0.0-preview.1.25080.5.nupkg.sha512"
+    },
+    "Npgsql/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hCbO8box7i/XXiTFqCJ3GoowyLqx3JXxyrbOJ6om7dr+eAknvBNhhUHeJVGAQo44sySZTfdVffp4BrtPeLZOAA==",
+      "path": "npgsql/9.0.2",
+      "hashPath": "npgsql.9.0.2.nupkg.sha512"
+    },
+    "Npgsql.EntityFrameworkCore.PostgreSQL/10.0.0-preview.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-I+eG51L3zK47LyLWviwwy0qsqCryeAO5huexB2LSBfxwEysqsQ4aKZ9haA8A2MaxcNxzVWD6rXO3JC27W2C9HA==",
+      "path": "npgsql.entityframeworkcore.postgresql/10.0.0-preview.1",
+      "hashPath": "npgsql.entityframeworkcore.postgresql.10.0.0-preview.1.nupkg.sha512"
+    },
+    "Monitra.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

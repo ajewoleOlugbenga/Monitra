@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Core", "backend\Monitra.Core\Monitra.Core.csproj", "{264D0070-4D46-4B85-85A5-A5D8650F8AA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Infrastructure", "backend\Monitra.Infrastructure\Monitra.Infrastructure.csproj", "{6346296E-1D7A-454E-9CF1-C4BCFF967A60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Api", "backend\Monitra.Api\Monitra.Api.csproj", "{8847ED69-3EAE-4054-9EFE-CCF898239088}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Worker", "backend\Monitra.Worker\Monitra.Worker.csproj", "{FFC89578-E165-45C0-B95D-3EC2ED458C9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Tests", "backend\Monitra.Tests\Monitra.Tests.csproj", "{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{264D0070-4D46-4B85-85A5-A5D8650F8AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{264D0070-4D46-4B85-85A5-A5D8650F8AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{264D0070-4D46-4B85-85A5-A5D8650F8AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{264D0070-4D46-4B85-85A5-A5D8650F8AA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6346296E-1D7A-454E-9CF1-C4BCFF967A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6346296E-1D7A-454E-9CF1-C4BCFF967A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6346296E-1D7A-454E-9CF1-C4BCFF967A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6346296E-1D7A-454E-9CF1-C4BCFF967A60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8847ED69-3EAE-4054-9EFE-CCF898239088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8847ED69-3EAE-4054-9EFE-CCF898239088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8847ED69-3EAE-4054-9EFE-CCF898239088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8847ED69-3EAE-4054-9EFE-CCF898239088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC89578-E165-45C0-B95D-3EC2ED458C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC89578-E165-45C0-B95D-3EC2ED458C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC89578-E165-45C0-B95D-3EC2ED458C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC89578-E165-45C0-B95D-3EC2ED458C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
