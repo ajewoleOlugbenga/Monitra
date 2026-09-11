@@ -6,6 +6,9 @@ public class AgentOptions
 
     public string ApiBaseUrl { get; set; } = "https://localhost:5001";
     public int HeartbeatIntervalSeconds { get; set; } = 60;
+    public int HealthReportIntervalSeconds { get; set; } = 300;
+    public int PolicyRefreshIntervalSeconds { get; set; } = 900;
+    public int LogFlushIntervalSeconds { get; set; } = 120;
 
     /// <summary>
     /// Bootstrap install token used only for first-run registration. In a real deployment this

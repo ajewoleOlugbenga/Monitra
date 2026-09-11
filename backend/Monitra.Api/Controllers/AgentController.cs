@@ -154,6 +154,35 @@ public class AgentController : ControllerBase
         });
     }
 
+    [HttpGet("policy")]
+    public async Task<IActionResult> GetPolicy()
+    {
+        var (tenantId, deviceId, _) = ResolveAgentIdentity();
+        if (tenantId == null || deviceId == null)
+        {
+            return Unauthorized();
+        }
+
+        // IgnoreQueryFilters: this action isn't scoped by the usual tenant-user JWT path, and
+        // Tenant itself carries no ITenantScoped filter anyway (it IS the tenant).
+        var tenant = await _dbContext.Tenants.IgnoreQueryFilters().FirstOrDefaultAsync(t => t.Id == tenantId.Value);
+        if (tenant == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(new AgentPolicyResponse
+        {
+            IdleThresholdMinutes = tenant.IdleThresholdMinutes,
+            BreaksPerDay = tenant.BreaksPerDay,
+            BreakDurationMinutes = tenant.BreakDurationMinutes,
+            DefaultWorkStartTime = tenant.DefaultWorkStartTime,
+            DefaultWorkEndTime = tenant.DefaultWorkEndTime,
+            WorkDays = tenant.WorkDays,
+            TrackWeekends = tenant.TrackWeekends
+        });
+    }
+
     [HttpPost("inactivity")]
     public async Task<IActionResult> ReportInactivity([FromBody] AgentInactivityRequest request)
     {
@@ -356,6 +385,17 @@ public class AgentHeartbeatResponse
     public DateTime ServerTimeUtc { get; set; }
     public Guid? DeviceId { get; set; }
     public Guid? TenantId { get; set; }
+}
+
+public class AgentPolicyResponse
+{
+    public int IdleThresholdMinutes { get; set; }
+    public int BreaksPerDay { get; set; }
+    public int BreakDurationMinutes { get; set; }
+    public TimeSpan DefaultWorkStartTime { get; set; }
+    public TimeSpan DefaultWorkEndTime { get; set; }
+    public string WorkDays { get; set; } = string.Empty;
+    public bool TrackWeekends { get; set; }
 }
 
 public class AgentInactivityRequest
