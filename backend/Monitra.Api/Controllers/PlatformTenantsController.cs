@@ -188,6 +188,18 @@ public class PlatformTenantsController : ControllerBase
             return BadRequest("Email is already registered.");
         }
 
+        // Owner is reserved for the account created alongside the tenant itself; this endpoint
+        // provisions the rest of the tenant's staff, including IT (Monitra Architecture
+        // Reference §14) - defaults to Admin for backward compatibility.
+        var role = TenantUserRole.Admin;
+        if (!string.IsNullOrWhiteSpace(request.Role))
+        {
+            if (!Enum.TryParse(request.Role, true, out role) || role == TenantUserRole.Owner)
+            {
+                return BadRequest("Role must be one of: Admin, Viewer, ITSupport.");
+            }
+        }
+
         var newAdmin = new TenantUser
         {
             Id = Guid.NewGuid(),
@@ -195,7 +207,7 @@ public class PlatformTenantsController : ControllerBase
             FullName = request.FullName,
             Email = request.Email,
             PasswordHash = PasswordHashHelper.HashPassword(request.Password),
-            Role = TenantUserRole.Admin,
+            Role = role,
             Status = "Active",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -289,6 +301,7 @@ public class AddAdminRequest
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string? Role { get; set; } // Admin (default) | Viewer | ITSupport
 }
 
 public class GenerateTokenRequest
