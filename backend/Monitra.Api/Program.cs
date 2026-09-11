@@ -98,7 +98,17 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("SuperAdminPolicy", policy => policy.RequireRole("SuperAdmin"));
-    options.AddPolicy("TenantUserPolicy", policy => policy.RequireRole("Owner", "Admin", "Viewer"));
+    // Any signed-in tenant user, regardless of role - for endpoints like "view my own profile".
+    options.AddPolicy("TenantUserPolicy", policy => policy.RequireRole("Owner", "Admin", "Viewer", "ITSupport"));
+    // Behavioral/productivity data - inactivity incidents, breaks, reports. Deliberately
+    // excludes ITSupport (see Monitra Architecture Reference §14: IT gets device health/logs
+    // only, never why an employee was idle).
+    options.AddPolicy("BehavioralViewPolicy", policy => policy.RequireRole("Owner", "Admin", "Viewer"));
+    // Issuing actions, reviewing inactivity, managing tenant settings - never Viewer or ITSupport.
+    options.AddPolicy("TenantManagerPolicy", policy => policy.RequireRole("Owner", "Admin"));
+    // Device fleet health/logs only. Deliberately excludes Admin/Viewer - IT should not need
+    // (and should not default into) visibility over behavioral/productivity data.
+    options.AddPolicy("ITPolicy", policy => policy.RequireRole("Owner", "ITSupport"));
 });
 
 // 5. CORS Configurations

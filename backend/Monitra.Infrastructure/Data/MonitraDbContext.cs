@@ -23,6 +23,10 @@ public class MonitraDbContext : DbContext
     public DbSet<AgentInstallToken> AgentInstallTokens => Set<AgentInstallToken>();
     public DbSet<DeviceToken> DeviceTokens => Set<DeviceToken>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<InactivityIncident> InactivityIncidents => Set<InactivityIncident>();
+    public DbSet<BreakRequest> BreakRequests => Set<BreakRequest>();
+    public DbSet<DeviceHealthSnapshot> DeviceHealthSnapshots => Set<DeviceHealthSnapshot>();
+    public DbSet<DeviceLog> DeviceLogs => Set<DeviceLog>();
 
     // This property will be evaluated dynamically by EF Core's query compilation for HasQueryFilter
     public Guid CurrentTenantId => _tenantProvider.TenantId ?? Guid.Empty;
@@ -55,6 +59,18 @@ public class MonitraDbContext : DbContext
         modelBuilder.Entity<AgentInstallToken>()
             .HasIndex(it => it.TokenHash)
             .IsUnique();
+
+        modelBuilder.Entity<InactivityIncident>()
+            .HasIndex(i => new { i.EmployeeId, i.DetectedAt });
+
+        modelBuilder.Entity<BreakRequest>()
+            .HasIndex(b => new { b.EmployeeId, b.RequestedAt });
+
+        modelBuilder.Entity<DeviceHealthSnapshot>()
+            .HasIndex(h => new { h.DeviceId, h.CapturedAt });
+
+        modelBuilder.Entity<DeviceLog>()
+            .HasIndex(l => new { l.DeviceId, l.CreatedAt });
 
         // Apply Global Query Filters for all ITenantScoped entities
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

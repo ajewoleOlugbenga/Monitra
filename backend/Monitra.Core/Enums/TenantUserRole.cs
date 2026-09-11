@@ -4,5 +4,8 @@ public enum TenantUserRole
 {
     Owner,
     Admin,
-    Viewer
+    Viewer,
+    // Device fleet health and logs only - deliberately excluded from behavioral/productivity
+    // data (inactivity, breaks, reports). See Monitra Architecture Reference §14.
+    ITSupport
 }
