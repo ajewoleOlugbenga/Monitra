@@ -137,8 +137,10 @@ public class MonitraDbContext : DbContext
                 }
 
                 var tenantIdProp = entry.Property(nameof(ITenantScoped.TenantId));
-                var originalTenantId = (Guid)tenantIdProp.OriginalValue;
-                var currentTenantId = (Guid)tenantIdProp.CurrentValue;
+                // TenantId is a non-nullable Guid column - OriginalValue/CurrentValue are only
+                // typed as object? because PropertyEntry is generic over any CLR property.
+                var originalTenantId = (Guid)tenantIdProp.OriginalValue!;
+                var currentTenantId = (Guid)tenantIdProp.CurrentValue!;
 
                 if (originalTenantId != tenantId.Value)
                 {

@@ -9,8 +9,8 @@
     <ProjectReference Include="..\Monitra.Infrastructure\Monitra.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0-preview.1.25081.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0-preview.1.25081.1">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

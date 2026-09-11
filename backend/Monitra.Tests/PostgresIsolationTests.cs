@@ -13,7 +13,7 @@ public class PostgresIsolationTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _postgresContainer = new PostgreSqlBuilder()
+        _postgresContainer = new PostgreSqlBuilder("postgres:16-alpine")
             .WithDatabase("monitradb")
             .WithUsername("postgres")
             .WithPassword("postgres")
