@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Worker", "backend\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Tests", "backend\Monitra.Tests\Monitra.Tests.csproj", "{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitra.Agent", "backend\Monitra.Agent\Monitra.Agent.csproj", "{EE228A00-40E2-4089-B8C6-DBB12413CB83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,9 @@ Global
 		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2F0B9C6-89ED-4E57-BF6B-70EBF82613BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE228A00-40E2-4089-B8C6-DBB12413CB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE228A00-40E2-4089-B8C6-DBB12413CB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE228A00-40E2-4089-B8C6-DBB12413CB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE228A00-40E2-4089-B8C6-DBB12413CB83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
