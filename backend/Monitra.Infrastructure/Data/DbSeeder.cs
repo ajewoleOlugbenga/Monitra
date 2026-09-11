@@ -23,12 +23,13 @@ public static class DbSeeder
         // 1. Seed Platform Admins
         if (!await context.PlatformUsers.AnyAsync())
         {
+            var generatedPassword = GenerateRandomPassword();
             var superAdmin = new PlatformUser
             {
                 Id = Guid.NewGuid(),
                 FullName = "Platform Super Admin",
                 Email = "admin@monitra.local",
-                PasswordHash = PasswordHashHelper.HashPassword("AdminPass123!"),
+                PasswordHash = PasswordHashHelper.HashPassword(generatedPassword),
                 Role = "SuperAdmin",
                 Status = "Active",
                 CreatedAt = DateTime.UtcNow,
@@ -36,6 +37,9 @@ public static class DbSeeder
             };
             context.PlatformUsers.Add(superAdmin);
             await context.SaveChangesAsync();
+
+            Console.WriteLine($"[DbSeeder] Seeded platform super admin '{superAdmin.Email}' " +
+                $"with generated password: {generatedPassword} (dev only, shown once).");
         }
 
         // 2. Seed default Tenant (Acme Corp)
@@ -71,19 +75,23 @@ public static class DbSeeder
         // Let's add them directly to DB sets.
         if (!await context.TenantUsers.IgnoreQueryFilters().AnyAsync(u => u.TenantId == acmeTenantId))
         {
+            var generatedPassword = GenerateRandomPassword();
             var tenantOwner = new TenantUser
             {
                 Id = Guid.NewGuid(),
                 TenantId = acmeTenantId,
                 FullName = "Acme Owner",
                 Email = "admin@acme.com",
-                PasswordHash = PasswordHashHelper.HashPassword("AcmePass123!"),
+                PasswordHash = PasswordHashHelper.HashPassword(generatedPassword),
                 Role = TenantUserRole.Owner,
                 Status = "Active",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
             context.TenantUsers.Add(tenantOwner);
+
+            Console.WriteLine($"[DbSeeder] Seeded tenant owner '{tenantOwner.Email}' " +
+                $"with generated password: {generatedPassword} (dev only, shown once).");
         }
 
         // 4. Seed Employee for Acme Corp
@@ -104,12 +112,12 @@ public static class DbSeeder
         }
 
         // 5. Seed default installation token for Acme Corp
-        string installTokenValue = "ACME-INSTALL-2026";
-        byte[] tokenBytes = Encoding.UTF8.GetBytes(installTokenValue);
-        string tokenHash = Convert.ToHexString(SHA256.HashData(tokenBytes));
-
         if (!await context.AgentInstallTokens.IgnoreQueryFilters().AnyAsync(t => t.TenantId == acmeTenantId))
         {
+            string installTokenValue = $"ACME-{Convert.ToHexString(RandomNumberGenerator.GetBytes(12))}";
+            byte[] tokenBytes = Encoding.UTF8.GetBytes(installTokenValue);
+            string tokenHash = Convert.ToHexString(SHA256.HashData(tokenBytes));
+
             var token = new AgentInstallToken
             {
                 Id = Guid.NewGuid(),
@@ -124,8 +132,23 @@ public static class DbSeeder
                 UpdatedAt = DateTime.UtcNow
             };
             context.AgentInstallTokens.Add(token);
+
+            Console.WriteLine($"[DbSeeder] Seeded Acme install token (dev only, shown once): {installTokenValue}");
         }
 
         await context.SaveChangesAsync();
+    }
+
+    private static string GenerateRandomPassword()
+    {
+        // Dev-only bootstrap credential: random, not hardcoded, printed once to the console.
+        const string alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
+        var bytes = RandomNumberGenerator.GetBytes(20);
+        var chars = new char[bytes.Length];
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            chars[i] = alphabet[bytes[i] % alphabet.Length];
+        }
+        return new string(chars);
     }
 }

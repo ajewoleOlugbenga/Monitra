@@ -29,7 +29,11 @@ public class JwtTokenService
             claims.Add(new Claim("tenant_id", tenantId.Value.ToString()));
         }
 
-        var keyString = _configuration["Jwt:Key"] ?? "super_secret_key_that_is_at_least_32_characters_long_for_security";
+        var keyString = _configuration["Jwt:Key"];
+        if (string.IsNullOrEmpty(keyString))
+        {
+            throw new InvalidOperationException("Jwt:Key is not configured.");
+        }
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

@@ -16,8 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
 {
-    // Fallback default for development
-    connectionString = "Host=localhost;Database=monitra;Username=postgres;Password=postgres";
+    throw new InvalidOperationException(
+        "Database connection string is not configured. Set ConnectionStrings__DefaultConnection " +
+        "as an environment variable, or via dotnet user-secrets in development.");
 }
 
 builder.Services.AddDbContext<MonitraDbContext>(options =>
@@ -47,7 +48,13 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // 4. JWT Authentication
-var keyString = builder.Configuration["Jwt:Key"] ?? "super_secret_key_that_is_at_least_32_characters_long_for_security";
+var keyString = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(keyString) || keyString.Length < 32)
+{
+    throw new InvalidOperationException(
+        "Jwt:Key is not configured or is too short. Set Jwt__Key (at least 32 characters) as an " +
+        "environment variable, or via dotnet user-secrets in development.");
+}
 var key = Encoding.UTF8.GetBytes(keyString);
 
 builder.Services.AddAuthentication(options =>

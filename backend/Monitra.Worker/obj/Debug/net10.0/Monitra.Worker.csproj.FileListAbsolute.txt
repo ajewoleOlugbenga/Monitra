@@ -1,6 +1,0 @@
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.csproj.AssemblyReference.cache
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.AssemblyInfoInputs.cache
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.AssemblyInfo.cs
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.csproj.CoreCompileInputs.cache
-C:\Users\train\OneDrive\Documents\GitHub\Monitra\backend\Monitra.Worker\obj\Debug\net10.0\Monitra.Worker.sourcelink.json
