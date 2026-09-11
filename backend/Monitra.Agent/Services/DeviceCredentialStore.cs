@@ -35,7 +35,7 @@ public class DeviceCredentialStore
     {
         var json = JsonSerializer.Serialize(credentials);
         var plainBytes = Encoding.UTF8.GetBytes(json);
-        var protectedBytes = ProtectedData.Protect(plainBytes, entropy: null, DataProtectionScope.CurrentUser);
+        var protectedBytes = ProtectedData.Protect(plainBytes, optionalEntropy: null, DataProtectionScope.CurrentUser);
         await File.WriteAllBytesAsync(_filePath, protectedBytes, cancellationToken);
     }
 
@@ -47,7 +47,7 @@ public class DeviceCredentialStore
         }
 
         var protectedBytes = await File.ReadAllBytesAsync(_filePath, cancellationToken);
-        var plainBytes = ProtectedData.Unprotect(protectedBytes, entropy: null, DataProtectionScope.CurrentUser);
+        var plainBytes = ProtectedData.Unprotect(protectedBytes, optionalEntropy: null, DataProtectionScope.CurrentUser);
         var json = Encoding.UTF8.GetString(plainBytes);
         return JsonSerializer.Deserialize<DeviceCredentials>(json);
     }
