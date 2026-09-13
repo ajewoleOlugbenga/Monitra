@@ -343,6 +343,59 @@ public class AgentController : ControllerBase
         return Ok(new { Accepted = Math.Min(entries.Count, 200) });
     }
 
+    [HttpGet("actions/pending")]
+    public async Task<IActionResult> GetPendingActions()
+    {
+        var (tenantId, _, employeeId) = ResolveAgentIdentity();
+        if (tenantId == null)
+        {
+            return Unauthorized();
+        }
+        if (employeeId == null)
+        {
+            return Ok(Array.Empty<object>());
+        }
+
+        // Anything not yet confirmed Delivered - covers both a genuinely missed SignalR push
+        // (agent was disconnected when it was sent) and this device simply never having been
+        // online since. Small cap: this is a catch-up poll, not a full history view.
+        var pending = await _dbContext.EmployeeActions
+            .Where(a => a.EmployeeId == employeeId.Value && a.Status == EmployeeActionStatus.Sent)
+            .OrderBy(a => a.CreatedAt)
+            .Take(20)
+            .Select(a => new { a.Id, ActionType = a.ActionType.ToString(), Severity = a.Severity.ToString(), a.Message, a.CreatedAt })
+            .ToListAsync();
+
+        return Ok(pending);
+    }
+
+    [HttpPost("actions/{actionId}/ack")]
+    public async Task<IActionResult> AcknowledgeAction(Guid actionId)
+    {
+        var (tenantId, _, employeeId) = ResolveAgentIdentity();
+        if (tenantId == null || employeeId == null)
+        {
+            return Unauthorized();
+        }
+
+        var action = await _dbContext.EmployeeActions
+            .FirstOrDefaultAsync(a => a.Id == actionId && a.EmployeeId == employeeId.Value);
+        if (action == null)
+        {
+            return NotFound("Action not found for this device's employee.");
+        }
+
+        if (action.Status == EmployeeActionStatus.Sent)
+        {
+            action.Status = EmployeeActionStatus.Delivered;
+            action.DeliveredAt = DateTime.UtcNow;
+            action.UpdatedAt = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        return Ok(new { action.Id, action.Status });
+    }
+
     private (Guid? TenantId, Guid? DeviceId, Guid? EmployeeId) ResolveAgentIdentity()
     {
         var tenantId = HttpContext.Items["TenantId"] as Guid?;

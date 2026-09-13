@@ -24,6 +24,7 @@ public class AgentBackgroundService : BackgroundService
     private readonly PolicyCache _policyCache;
     private readonly DeviceHealthService _healthService;
     private readonly DeviceLogBuffer _logBuffer;
+    private readonly ActionHubClient _actionHub;
     private readonly TrayContext _tray;
     private readonly AgentOptions _options;
 
@@ -35,6 +36,7 @@ public class AgentBackgroundService : BackgroundService
     private DateTime _nextHealthDue = DateTime.MinValue;
     private DateTime _nextPolicyRefreshDue = DateTime.MinValue;
     private DateTime _nextLogFlushDue = DateTime.MinValue;
+    private DateTime _nextActionPollDue = DateTime.MinValue;
 
     public AgentBackgroundService(
         ILogger<AgentBackgroundService> logger,
@@ -43,6 +45,7 @@ public class AgentBackgroundService : BackgroundService
         PolicyCache policyCache,
         DeviceHealthService healthService,
         DeviceLogBuffer logBuffer,
+        ActionHubClient actionHub,
         TrayContext tray,
         IOptions<AgentOptions> options)
     {
@@ -52,10 +55,12 @@ public class AgentBackgroundService : BackgroundService
         _policyCache = policyCache;
         _healthService = healthService;
         _logBuffer = logBuffer;
+        _actionHub = actionHub;
         _tray = tray;
         _options = options.Value;
 
         _tray.BreakRequested += OnBreakRequestedAsync;
+        _actionHub.ActionReceived += OnActionReceivedAsync;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -93,6 +98,10 @@ public class AgentBackgroundService : BackgroundService
 
     private async Task TickAsync(CancellationToken ct)
     {
+        // No-op once connected; retries here if the last attempt (startup or a prior tick)
+        // failed. Actual pushes arrive via the ActionReceived event, not from this call.
+        await _actionHub.EnsureStartedAsync(_credentials!.RawDeviceToken, ct);
+
         var idle = IdleTimeService.GetIdleTime();
         var foregroundApp = ForegroundAppService.GetForegroundProcessName();
         var now = DateTime.UtcNow;
@@ -142,6 +151,14 @@ public class AgentBackgroundService : BackgroundService
         {
             _nextLogFlushDue = now.AddSeconds(Math.Max(_options.LogFlushIntervalSeconds, 30));
             await FlushLogsAsync(ct);
+        }
+
+        if (now >= _nextActionPollDue)
+        {
+            // Fallback for anything sent while this device was disconnected/offline - the hub
+            // push is the fast path, this is the catch-up path. Same cadence as heartbeat.
+            _nextActionPollDue = now.AddSeconds(Math.Max(_options.HeartbeatIntervalSeconds, 15));
+            await PollPendingActionsAsync(ct);
         }
     }
 
@@ -216,6 +233,53 @@ public class AgentBackgroundService : BackgroundService
             _tray.ShowBalloon("Break request failed", "Couldn't reach Monitra - try again in a moment.", System.Windows.Forms.ToolTipIcon.Error);
             _logBuffer.Add("Error", $"Break request failed: {ex.Message}");
             _logger.LogWarning(ex, "Break request failed.");
+        }
+    }
+
+    private async Task OnActionReceivedAsync(EmployeeActionPayload payload)
+    {
+        _logger.LogInformation("Action {ActionId} received via live SignalR push.", payload.Id);
+        await ShowAndAcknowledgeActionAsync(payload);
+    }
+
+    private async Task PollPendingActionsAsync(CancellationToken ct)
+    {
+        if (_credentials == null) return;
+        try
+        {
+            var pending = await _apiClient.GetPendingActionsAsync(_credentials.RawDeviceToken, ct);
+            foreach (var payload in pending)
+            {
+                _logger.LogInformation("Action {ActionId} picked up via fallback poll (missed the live push).", payload.Id);
+                await ShowAndAcknowledgeActionAsync(payload);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logBuffer.Add("Warning", $"Pending-actions poll failed: {ex.Message}");
+            _logger.LogWarning(ex, "Pending-actions poll failed.");
+        }
+    }
+
+    private async Task ShowAndAcknowledgeActionAsync(EmployeeActionPayload payload)
+    {
+        var icon = payload.Severity switch
+        {
+            "Critical" => System.Windows.Forms.ToolTipIcon.Error,
+            "Warning" => System.Windows.Forms.ToolTipIcon.Warning,
+            _ => System.Windows.Forms.ToolTipIcon.Info
+        };
+
+        _tray.ShowBalloon($"Monitra - {payload.ActionType}", payload.Message, icon);
+
+        try
+        {
+            await _apiClient.AcknowledgeActionAsync(_credentials!.RawDeviceToken, payload.Id, CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _logBuffer.Add("Warning", $"Failed to acknowledge action {payload.Id}: {ex.Message}");
+            _logger.LogWarning(ex, "Failed to acknowledge action {ActionId}.", payload.Id);
         }
     }
 

@@ -58,6 +58,27 @@ public class ApiClient
         string deviceToken, AgentHealthRequest payload, CancellationToken cancellationToken)
         => await PostDeviceAsync<AgentHealthRequest, AgentHealthResponse>("/api/agent/health", deviceToken, payload, cancellationToken);
 
+    public async Task<List<EmployeeActionPayload>> GetPendingActionsAsync(string deviceToken, CancellationToken cancellationToken)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/api/agent/actions/pending");
+        request.Headers.Add("X-Device-Token", deviceToken);
+
+        var response = await _httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var body = await response.Content.ReadFromJsonAsync<List<EmployeeActionPayload>>(cancellationToken: cancellationToken);
+        return body ?? new List<EmployeeActionPayload>();
+    }
+
+    public async Task AcknowledgeActionAsync(string deviceToken, Guid actionId, CancellationToken cancellationToken)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Post, $"/api/agent/actions/{actionId}/ack");
+        request.Headers.Add("X-Device-Token", deviceToken);
+
+        var response = await _httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task SubmitLogsAsync(string deviceToken, List<AgentLogEntry> entries, CancellationToken cancellationToken)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, "/api/agent/logs")

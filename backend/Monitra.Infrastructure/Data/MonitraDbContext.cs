@@ -27,6 +27,7 @@ public class MonitraDbContext : DbContext
     public DbSet<BreakRequest> BreakRequests => Set<BreakRequest>();
     public DbSet<DeviceHealthSnapshot> DeviceHealthSnapshots => Set<DeviceHealthSnapshot>();
     public DbSet<DeviceLog> DeviceLogs => Set<DeviceLog>();
+    public DbSet<EmployeeAction> EmployeeActions => Set<EmployeeAction>();
 
     // This property will be evaluated dynamically by EF Core's query compilation for HasQueryFilter
     public Guid CurrentTenantId => _tenantProvider.TenantId ?? Guid.Empty;
@@ -71,6 +72,9 @@ public class MonitraDbContext : DbContext
 
         modelBuilder.Entity<DeviceLog>()
             .HasIndex(l => new { l.DeviceId, l.CreatedAt });
+
+        modelBuilder.Entity<EmployeeAction>()
+            .HasIndex(a => new { a.EmployeeId, a.CreatedAt });
 
         // Apply Global Query Filters for all ITenantScoped entities
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

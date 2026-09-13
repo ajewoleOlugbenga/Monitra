@@ -81,6 +81,15 @@ public class AgentHealthResponse
     public string Status { get; set; } = string.Empty;
 }
 
+public class EmployeeActionPayload
+{
+    public Guid Id { get; set; }
+    public string ActionType { get; set; } = string.Empty;
+    public string Severity { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+}
+
 public class AgentLogEntry
 {
     public string Level { get; set; } = "Info";

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Monitra.Api.Hubs;
 using Monitra.Api.Middleware;
 using Monitra.Api.Services;
 using Monitra.Core.Interfaces;
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<MonitraDbContext>(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITenantProvider, TenantProvider>();
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddScoped<EmployeeActionPusher>();
 
 // 3. Rate Limiting Setup
 builder.Services.AddRateLimiter(options =>
@@ -64,6 +66,13 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    // Without this, the JWT handler silently renames the short "sub" claim to the long
+    // ClaimTypes.NameIdentifier URI on the way in (its DefaultInboundClaimTypeMap) - every
+    // User.FindFirst(JwtRegisteredClaimNames.Sub) lookup across this codebase (AuthController.Me,
+    // every audit-log ActorId, EmployeeMonitoringController's actor tracking) then silently finds
+    // nothing. Confirmed live: /api/auth/me returned 401 for every valid session, and every
+    // audit log's ActorId was blank/wrong, until this was set.
+    options.MapInboundClaims = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -73,7 +82,10 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "MonitraApi",
         ValidAudience = builder.Configuration["Jwt:Audience"] ?? "MonitraDashboard",
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        NameClaimType = ClaimTypes.NameIdentifier,
+        // Matches MapInboundClaims = false above: the token's own claim is "sub", not the
+        // long NameIdentifier URI, so this has to point at "sub" for User.Identity.Name to
+        // resolve to anything at all.
+        NameClaimType = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub,
         RoleClaimType = ClaimTypes.Role
     };
 
@@ -124,6 +136,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+// Real-time push to the agent (EmployeeAction notifications). Auth is handled by
+// TenantIsolationMiddleware, not [Authorize] - see Hubs/AgentHub.cs.
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -156,5 +171,6 @@ app.UseMiddleware<TenantIsolationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<AgentHub>("/hubs/agent");
 
 app.Run();

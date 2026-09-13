@@ -25,6 +25,7 @@ internal static class Program
         builder.Services.AddSingleton<PolicyCache>();
         builder.Services.AddSingleton<DeviceHealthService>();
         builder.Services.AddSingleton<DeviceLogBuffer>();
+        builder.Services.AddSingleton<ActionHubClient>();
         builder.Services.AddSingleton<TrayContext>();
         builder.Services.AddHostedService<AgentBackgroundService>();
 

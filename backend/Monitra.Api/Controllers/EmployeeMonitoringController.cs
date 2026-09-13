@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Monitra.Api.Services;
+using Monitra.Core.Entities;
 using Monitra.Core.Enums;
 using Monitra.Infrastructure.Data;
 
@@ -14,10 +16,12 @@ namespace Monitra.Api.Controllers;
 public class EmployeeMonitoringController : ControllerBase
 {
     private readonly MonitraDbContext _dbContext;
+    private readonly EmployeeActionPusher _actionPusher;
 
-    public EmployeeMonitoringController(MonitraDbContext dbContext)
+    public EmployeeMonitoringController(MonitraDbContext dbContext, EmployeeActionPusher actionPusher)
     {
         _dbContext = dbContext;
+        _actionPusher = actionPusher;
     }
 
     [HttpGet("{employeeId}/inactivity-incidents")]
@@ -77,6 +81,99 @@ public class EmployeeMonitoringController : ControllerBase
 
         return Ok(new { total, page, limit, items });
     }
+
+    [HttpPost("{employeeId}/actions")]
+    [Authorize(Policy = "TenantManagerPolicy")]
+    public async Task<IActionResult> CreateAction(Guid employeeId, [FromBody] CreateEmployeeActionRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Message))
+        {
+            return BadRequest("Message is required.");
+        }
+
+        if (!Enum.TryParse<EmployeeActionType>(request.ActionType, true, out var actionType))
+        {
+            return BadRequest("ActionType must be one of: Message, Warning, CoachingNote, Escalation.");
+        }
+
+        var severity = EmployeeActionSeverity.Info;
+        if (!string.IsNullOrWhiteSpace(request.Severity)
+            && !Enum.TryParse(request.Severity, true, out severity))
+        {
+            return BadRequest("Severity must be one of: Info, Warning, Critical.");
+        }
+
+        var employeeExists = await _dbContext.Employees.AnyAsync(e => e.Id == employeeId);
+        if (!employeeExists)
+        {
+            return NotFound("Employee not found.");
+        }
+
+        var userIdClaim = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+        Guid.TryParse(userIdClaim, out var actorId);
+
+        var action = new EmployeeAction
+        {
+            Id = Guid.NewGuid(),
+            EmployeeId = employeeId,
+            ActorTenantUserId = actorId,
+            ActionType = actionType,
+            Severity = severity,
+            Message = request.Message,
+            RelatedInactivityIncidentId = request.RelatedInactivityIncidentId,
+            Status = EmployeeActionStatus.Sent,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        _dbContext.EmployeeActions.Add(action);
+        // Save first so EnforceTenantIsolation populates action.TenantId from the caller's
+        // JWT claim before we reference it in the audit log below.
+        await _dbContext.SaveChangesAsync();
+
+        var audit = new AuditLog
+        {
+            Id = Guid.NewGuid(),
+            TenantId = action.TenantId,
+            ActorType = "TenantUser",
+            ActorId = actorId.ToString(),
+            Action = "employee_action_created",
+            EntityType = "EmployeeAction",
+            EntityId = action.Id.ToString(),
+            MetadataJson = $"{{\"ActionType\":\"{action.ActionType}\",\"EmployeeId\":\"{employeeId}\"}}",
+            CreatedAt = DateTime.UtcNow
+        };
+        _dbContext.AuditLogs.Add(audit);
+        await _dbContext.SaveChangesAsync();
+
+        // Best-effort real-time push - if the employee's agent isn't connected right now, the
+        // agent's periodic GET /api/agent/actions/pending poll picks this up once it (re)connects.
+        await _actionPusher.PushAsync(action);
+
+        return Ok(new { action.Id, action.Status });
+    }
+
+    [HttpGet("{employeeId}/actions")]
+    [Authorize(Policy = "BehavioralViewPolicy")]
+    public async Task<IActionResult> GetActions(Guid employeeId, [FromQuery] int page = 1, [FromQuery] int limit = 50)
+    {
+        var query = _dbContext.EmployeeActions
+            .Where(a => a.EmployeeId == employeeId)
+            .OrderByDescending(a => a.CreatedAt);
+
+        var total = await query.CountAsync();
+        var items = await query.Skip((page - 1) * limit).Take(limit).ToListAsync();
+
+        return Ok(new { total, page, limit, items });
+    }
+}
+
+public class CreateEmployeeActionRequest
+{
+    public string ActionType { get; set; } = "Message"; // Message | Warning | CoachingNote | Escalation
+    public string? Severity { get; set; } // Info (default) | Warning | Critical
+    public string Message { get; set; } = string.Empty;
+    public Guid? RelatedInactivityIncidentId { get; set; }
 }
 
 public class ReviewInactivityRequest
