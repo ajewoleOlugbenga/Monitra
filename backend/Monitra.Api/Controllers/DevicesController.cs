@@ -86,4 +86,34 @@ public class DevicesController : ControllerBase
 
         return Ok(logs);
     }
+
+    [HttpPut("{deviceId}/assign-employee")]
+    public async Task<IActionResult> AssignEmployee(Guid deviceId, [FromBody] AssignEmployeeRequest request)
+    {
+        var device = await _dbContext.Devices.FirstOrDefaultAsync(d => d.Id == deviceId);
+        if (device == null)
+        {
+            return NotFound("Device not found.");
+        }
+
+        if (request.EmployeeId.HasValue)
+        {
+            var employeeExists = await _dbContext.Employees.AnyAsync(e => e.Id == request.EmployeeId.Value);
+            if (!employeeExists)
+            {
+                return BadRequest("Employee not found.");
+            }
+        }
+
+        device.EmployeeId = request.EmployeeId; // null unassigns
+        device.UpdatedAt = DateTime.UtcNow;
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(new { device.Id, device.EmployeeId });
+    }
+}
+
+public class AssignEmployeeRequest
+{
+    public Guid? EmployeeId { get; set; }
 }

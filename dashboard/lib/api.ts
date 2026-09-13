@@ -97,3 +97,77 @@ export async function generateInstallToken(tenantId: string, payload: any) {
     body: JSON.stringify(payload),
   });
 }
+
+// 4. Employees
+export async function getEmployees() {
+  return fetchJson("/api/employees");
+}
+
+export async function getEmployee(id: string) {
+  return fetchJson(`/api/employees/${id}`);
+}
+
+export async function createEmployee(payload: any) {
+  return fetchJson("/api/employees", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getEmployeeInactivityIncidents(id: string) {
+  return fetchJson(`/api/employees/${id}/inactivity-incidents`);
+}
+
+export async function reviewInactivityIncident(incidentId: string, payload: any) {
+  return fetchJson(`/api/employees/inactivity-incidents/${incidentId}/review`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getEmployeeBreaks(id: string) {
+  return fetchJson(`/api/employees/${id}/breaks`);
+}
+
+export async function getEmployeeActions(id: string) {
+  return fetchJson(`/api/employees/${id}/actions`);
+}
+
+export async function createEmployeeAction(id: string, payload: any) {
+  return fetchJson(`/api/employees/${id}/actions`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// 5. Devices (IT)
+export async function getDevices() {
+  return fetchJson("/api/devices");
+}
+
+export async function getDeviceHealthHistory(id: string) {
+  return fetchJson(`/api/devices/${id}/health`);
+}
+
+export async function getDeviceLogs(id: string) {
+  return fetchJson(`/api/devices/${id}/logs`);
+}
+
+export async function assignDeviceEmployee(id: string, employeeId: string | null) {
+  return fetchJson(`/api/devices/${id}/assign-employee`, {
+    method: "PUT",
+    body: JSON.stringify({ employeeId }),
+  });
+}
+
+// 6. Tenant settings
+export async function getTenantSettings() {
+  return fetchJson("/api/tenant/settings");
+}
+
+export async function updateTenantSettings(payload: any) {
+  return fetchJson("/api/tenant/settings", {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
